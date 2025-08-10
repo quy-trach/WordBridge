@@ -1,0 +1,475 @@
+﻿<Window x:Class="WordBridge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WordBridge - Từ điển Anh - Việt" 
+        Height="600" 
+        Width="800"
+        Icon="/img/dictionary_icon.png"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <!-- Existing Theme Colors -->
+        <SolidColorBrush x:Key="WindowBackgroundLight" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="WindowBackgroundDark" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="TextForegroundLight" Color="#2D3748"/>
+        <SolidColorBrush x:Key="TextForegroundDark" Color="#E5E7EB"/>
+        <SolidColorBrush x:Key="AccentBlueLight" Color="#2C7BE5"/>
+        <SolidColorBrush x:Key="AccentBlueDark" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="AccentGreenLight" Color="#2F855A"/>
+        <SolidColorBrush x:Key="AccentGreenDark" Color="#34D399"/>
+        <SolidColorBrush x:Key="SecondaryBackgroundLight" Color="#EDF2F7"/>
+        <SolidColorBrush x:Key="SecondaryBackgroundDark" Color="#2D2D30"/>
+        <SolidColorBrush x:Key="AlternatingRowLight" Color="#F7FAFC"/>
+        <SolidColorBrush x:Key="AlternatingRowDark" Color="#3C3C3E"/>
+        <SolidColorBrush x:Key="ToggleBackgroundLight" Color="#4C9AFF"/>
+        <SolidColorBrush x:Key="ToggleBackgroundDark" Color="#3B82F6"/>
+
+        <!-- Button Styles -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource AccentBlueLight}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#357ABD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2A6099"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#A0AEC0"/>
+                                <Setter Property="Foreground" Value="#E2E8F0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionButtonStyleDark" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Background" Value="#4B5563"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#6B7280"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#374151"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#6B7280"/>
+                                <Setter Property="Foreground" Value="#9CA3AF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="BorderBrush" Value="#007ACC"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundedButtonDark" TargetType="Button" BasedOn="{StaticResource RoundedButton}">
+            <Setter Property="Background" Value="{DynamicResource AccentBlueDark}"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- New Style for AccountButton with Fixed White Background -->
+        <Style x:Key="AccountButtonStyle" TargetType="Button" BasedOn="{StaticResource RoundedButton}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundLight}"/>
+            <Setter Property="BorderBrush" Value="#007ACC"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F5F7FA"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E5E7EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AccountButtonStyleDark" TargetType="Button" BasedOn="{StaticResource AccountButtonStyle}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundDark}"/>
+            <Setter Property="BorderBrush" Value="#4B5563"/>
+        </Style>
+
+        <!-- Toggle Button Style -->
+        <Style TargetType="ToggleButton">
+            <Setter Property="Background" Value="{DynamicResource ToggleBackgroundLight}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="30">
+                            <Image x:Name="IconImage" Width="30" Height="30" Source="/img/sun_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ToggleBackgroundDark}"/>
+                                <Setter TargetName="IconImage" Property="Source" Value="/img/moon_icon.png"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2C7BE5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Search TextBox Style -->
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="15,0,50,0"/>
+            <Setter Property="BorderBrush" Value="#CBD5E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource WindowBackgroundLight}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundLight}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="25">
+                                <ScrollViewer x:Name="PART_ContentHost" Margin="2"/>
+                            </Border>
+                            <Button x:Name="searchButton" Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#BED9FF" BorderThickness="0" Click="SearchButton_Click">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="25">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Image Source="/img/magnify.png" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SearchTextBoxStyleDark" TargetType="TextBox" BasedOn="{StaticResource SearchTextBoxStyle}">
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundDark}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundDark}"/>
+            <Setter Property="BorderBrush" Value="#4B5563"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="25">
+                                <ScrollViewer x:Name="PART_ContentHost" Margin="2"/>
+                            </Border>
+                            <Button x:Name="searchButton" Width="50" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#4B5563" BorderThickness="0" Click="SearchButton_Click">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="25">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Image Source="/img/magnify.png" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Result TextBox Style -->
+        <Style x:Key="ResultTextBoxStyle" TargetType="TextBox">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundLight}"/>
+            <Setter Property="BorderBrush" Value="#CBD5E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundLight}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="2"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ResultTextBoxStyleDark" TargetType="TextBox" BasedOn="{StaticResource ResultTextBoxStyle}">
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundDark}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundDark}"/>
+            <Setter Property="BorderBrush" Value="#4B5563"/>
+        </Style>
+
+        <!-- DataGrid Style -->
+        <Style TargetType="DataGrid">
+            <Setter Property="RowBackground" Value="{DynamicResource WindowBackgroundLight}"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource AlternatingRowLight}"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="BorderBrush" Value="#CBD5E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundLight}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="RowHeight" Value="30"/>
+            <Setter Property="ColumnHeaderHeight" Value="35"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource SecondaryBackgroundLight}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource SecondaryBackgroundLight}"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+
+        <Style x:Key="DataGridDark" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+            <Setter Property="RowBackground" Value="{DynamicResource SecondaryBackgroundDark}"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource AlternatingRowDark}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundDark}"/>
+            <Setter Property="BorderBrush" Value="#4B5563"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource SecondaryBackgroundDark}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource SecondaryBackgroundDark}"/>
+        </Style>
+
+        <!-- ContextMenu Style -->
+        <Style x:Key="RoundedContextMenu" TargetType="ContextMenu">
+            <Setter Property="Background" Value="{DynamicResource WindowBackgroundLight}"/>
+            <Setter Property="BorderBrush" Value="#CBD5E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundedContextMenuDark" TargetType="ContextMenu" BasedOn="{StaticResource RoundedContextMenu}">
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundDark}"/>
+            <Setter Property="BorderBrush" Value="#4B5563"/>
+        </Style>
+
+        <!-- MenuItem Style -->
+        <Style x:Key="ContextMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,0,0,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundLight}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter Content="{TemplateBinding Header}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E5E7EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ContextMenuItemStyleDark" TargetType="MenuItem" BasedOn="{StaticResource ContextMenuItemStyle}">
+            <Setter Property="Foreground" Value="{DynamicResource TextForegroundDark}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter Content="{TemplateBinding Header}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#4B5563"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Search Bar and Account Section -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Logo -->
+            <Image Grid.Column="0" x:Name="Logo" Source="/img/logo.jpg" Width="120" Height="70" HorizontalAlignment="Left" Stretch="Uniform"/>
+
+            <!-- Search Bar -->
+            <Grid Grid.Column="1" VerticalAlignment="Center" Height="50" Margin="10,0">
+                <TextBox x:Name="txtWord" Style="{DynamicResource SearchTextBoxStyle}" KeyDown="TxtWord_KeyDown"/>
+            </Grid>
+
+            <!-- Account Buttons -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock x:Name="txtCurrentUser" FontWeight="Bold" Foreground="{DynamicResource TextForegroundLight}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <Button x:Name="AccountButton" Width="115" Height="50" Click="AccountButton_Click" Style="{DynamicResource AccountButtonStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="19*"/>
+                            <RowDefinition Height="11*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.RowSpan="2" Name="gifImage" Width="47" Height="47" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                        <Image Grid.Column="2" Name="gifImage2" Width="45" Height="44" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Grid.RowSpan="2"/>
+                    </Grid>
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="AccountContextMenu" Style="{DynamicResource RoundedContextMenu}">
+                            <MenuItem x:Name="LoginMenuItem" Header="Đăng nhập tài khoản" Click="Login_Click" Visibility="Visible" Style="{DynamicResource ContextMenuItemStyle}"/>
+                            <MenuItem x:Name="RegisterMenuItem" Header="Đăng ký tài khoản" Click="Register_Click" Visibility="Visible" Style="{DynamicResource ContextMenuItemStyle}"/>
+                            <MenuItem x:Name="LogoutMenuItem" Header="Đăng xuất" Click="Logout_Click" Visibility="Collapsed" Style="{DynamicResource ContextMenuItemStyle}"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <ToggleButton x:Name="toggleDarkMode" Width="50" Height="50" Checked="ToggleDarkMode_Checked" Unchecked="ToggleDarkMode_Unchecked"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,10">
+            <Button x:Name="btnPlayAudio" Style="{DynamicResource ActionButtonStyle}" Width="110" Height="40" Margin="5,0" Click="BtnPlayAudio_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/img/icon_speaker.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                    <TextBlock Text="Phát âm" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnAddFavorite" Style="{DynamicResource ActionButtonStyle}" Width="110" Height="40" Margin="5,0" Click="BtnAddFavorite_Click" IsEnabled="False">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/img/icon_heart.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                    <TextBlock Text="Yêu thích" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnHistory" Style="{DynamicResource ActionButtonStyle}" Width="110" Height="40" Margin="5,0" Click="BtnHistory_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/img/icon_history.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                    <TextBlock Text="Lịch sử" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnShowFavorites" Style="{DynamicResource ActionButtonStyle}" Width="110" Height="40" Margin="5,0" Click="BtnShowFavorites_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/img/icon_star.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                    <TextBlock Text="Từ yêu thích" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnDeleteAll" Style="{DynamicResource ActionButtonStyle}" Width="110" Height="40" Margin="5,0" Click="BtnDeleteAll_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/img/icon_delete.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                    <TextBlock Text="Xóa tất cả" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- Translation Display -->
+        <StackPanel Grid.Row="2" Margin="0,10">
+            <TextBlock x:Name="txtWordDisplay" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource AccentBlueLight}" Margin="0,5"/>
+            <TextBlock x:Name="txtTranslationDisplay" FontSize="16" Foreground="{DynamicResource AccentGreenLight}" Margin="0,0,0,12"/>
+            <TextBox x:Name="txtResult" Style="{DynamicResource ResultTextBoxStyle}" Visibility="Visible" Width="Auto" Height="600"/>
+            <DataGrid x:Name="dataGridHistory" AutoGenerateColumns="False" Visibility="Collapsed" IsReadOnly="True" Margin="0,10,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Từ" Binding="{Binding Word}" Width="2*"/>
+                    <DataGridTextColumn Header="Ngày tra cứu" Binding="{Binding LookupDate, StringFormat=dd/MM/yyyy HH:mm:ss}" Width="2*"/>
+                    <DataGridTemplateColumn Header="" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="DeleteHistory_Click" Background="Transparent" BorderThickness="0" ToolTip="Xóa">
+                                    <Image Source="/img/icon_delete.png" Width="30" Height="30"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid x:Name="dataGridFavorites" AutoGenerateColumns="False" Visibility="Collapsed" IsReadOnly="True" Margin="0,10,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Từ" Binding="{Binding Word}" Width="2*"/>
+                    <DataGridTextColumn Header="Ngày thêm" Binding="{Binding FavoriteDate, StringFormat=dd/MM/yyyy HH:mm:ss}" Width="Auto"/>
+                    <DataGridTemplateColumn Header="" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="DeleteFavorite_Click" Background="Transparent" BorderThickness="0" ToolTip="Xóa">
+                                    <Image Source="/img/icon_delete.png" Width="30" Height="30"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+        <!-- Footer -->
+        <TextBlock x:Name="Footer" Grid.Row="3" Text="© WordBridge - 2025" 
+                   HorizontalAlignment="Center" FontSize="14" Foreground="{DynamicResource TextForegroundLight}"/>
+    </Grid>
+</Window>

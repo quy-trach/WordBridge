@@ -1,0 +1,161 @@
+﻿<Window x:Class="WordBridge.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Đăng nhập" 
+        Icon="/img/log-in.png"
+        Height="450" 
+        Width="400" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterOwner"
+        Background="#F5F7FA">
+    <Grid Margin="30">
+        <StackPanel>
+            <!-- Tiêu đề -->
+            <TextBlock Text="Đăng nhập" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       Foreground="#2B2D42" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,20"/>
+
+            <!-- Tên đăng nhập -->
+            <TextBlock Text="Tên đăng nhập:" />
+            <Border Background="#FFFFFF" CornerRadius="5" BorderBrush="#D1D5DB" BorderThickness="1" Margin="0,5,0,15">
+                <Grid Height="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/img/user.png" Width="20" Height="20" Margin="10,0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtUsername"
+                 Grid.Column="1"
+                 Padding="10,0"
+                 BorderThickness="0"
+                 FontSize="14"
+                 VerticalContentAlignment="Center"
+                 Background="Transparent"/>
+                </Grid>
+            </Border>
+
+            <!-- Mật khẩu -->
+            <TextBlock Text="Mật khẩu:" />
+            <Border Background="#FFFFFF" CornerRadius="5" BorderBrush="#D1D5DB" BorderThickness="1" Margin="0,5,0,15">
+                <Grid Height="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/img/lock.png" Width="20" Height="20" Margin="10,0" VerticalAlignment="Center"/>
+                    <PasswordBox x:Name="txtPassword"
+                     Grid.Column="1"
+                     Padding="10,0"
+                     BorderThickness="0"
+                     FontSize="14"
+                     VerticalContentAlignment="Center"
+                     Background="Transparent"/>
+                </Grid>
+            </Border>
+
+
+            <!-- Nhớ mật khẩu và Quên mật khẩu -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <CheckBox x:Name="chkRememberMe" 
+                          Content="Nhớ mật khẩu" 
+                          FontSize="14" 
+                          Foreground="#2B2D42" 
+                          VerticalAlignment="Center"/>
+                <TextBlock Text="Quên mật khẩu?" 
+                           FontSize="14" 
+                           Foreground="#3B82F6" 
+                           TextDecorations="Underline" 
+                           Cursor="Hand" 
+                           HorizontalAlignment="Right" 
+                           VerticalAlignment="Center" 
+                           Margin="115,0,0,0" 
+                           MouseLeftButtonDown="ForgotPassword_Click"/>
+            </StackPanel>
+
+            <!-- Nút điều khiển -->
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,10,0,0">
+                <Button Content="Đăng nhập" 
+                        Width="120" 
+                        Height="40" 
+                        Margin="0,0,10,0" 
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Foreground="#FFFFFF"
+                        Background="#3B82F6"
+                        BorderThickness="0"
+                        Click="BtnLogin_Click">
+                    <Button.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border CornerRadius="5" 
+                                                Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#2563EB"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Effect>
+                        <DropShadowEffect ShadowDepth="2" 
+                                          Direction="270" 
+                                          Color="#D1D5DB" 
+                                          BlurRadius="5" 
+                                          Opacity="0.3"/>
+                    </Button.Effect>
+                </Button>
+                <Button Content="Hủy" 
+                        Width="120" 
+                        Height="40" 
+                        Margin="0" 
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Foreground="#2B2D42"
+                        Background="#E5E7EB"
+                        BorderThickness="0"
+                        Click="BtnCancel_Click">
+                    <Button.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border CornerRadius="5" 
+                                                Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#D1D5DB"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Effect>
+                        <DropShadowEffect ShadowDepth="2" 
+                                          Direction="270" 
+                                          Color="#D1D5DB" 
+                                          BlurRadius="5" 
+                                          Opacity="0.3"/>
+                    </Button.Effect>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
